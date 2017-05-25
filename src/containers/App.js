@@ -76,12 +76,12 @@ class App extends Component {
           </form>
         </header>
         <section className="main">
-          { (activeTodos + completedTodos) > 0 && (
+          {(activeTodos + completedTodos) > 0 && (
             <div>
               <input id="toggle-all" type="checkbox" className="toggle-all" checked={activeTodos === 0} onChange={this.toggleAll}/>
               <label htmlFor="toggle-all">Mark all as complete</label>
             </div>
-          ) }
+          )}
           <ul className="todo-list">
             {todos.map(todo => (
               <TodoItem
