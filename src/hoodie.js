@@ -5,7 +5,7 @@ import PouchDB from 'pouchdb';
 import { addTodo, removeTodo, updateTodo } from './actions/todos.actions';
 
 const hoodie = new Hoodie({
-  url: 'http://localhost:8080',
+  url: process.env.HOODIE_URL || 'http://localhost:8080',
   PouchDB
 });
 
