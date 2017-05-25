@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchTodos, storeTodo, deleteTodo, toggleTodo, toggleAllTodos, editTodo } from '../actions/todos.actions';
+import { getVisibleTodos } from '../reducers';
 import TodoItem from '../components/todoItem';
 import Footer from '../components/footer';
-import './App.css';
 
 class App extends Component {
   state = {
     todo: '',
-    editing: null,
-    editText: ''
+    editing: null
   }
 
   componentDidMount() {
@@ -75,7 +74,7 @@ class App extends Component {
           </form>
         </header>
         <section className="main">
-          { todos.length > 0 && (
+          { (activeTodos + completedTodos) > 0 && (
             <div>
               <input id="toggle-all" type="checkbox" className="toggle-all" checked={activeTodos === 0} onChange={this.toggleAll}/>
               <label htmlFor="toggle-all">Mark all as complete</label>
@@ -96,7 +95,7 @@ class App extends Component {
             ))}
           </ul>
         </section>
-        {(activeTodos || completedTodos) ? <Footer onClearCompleted={this.clearCompleted} todosCount={todos.length} completedTodos={completedTodos} filter={filter} /> : ''}
+        {(activeTodos || completedTodos) ? <Footer onClearCompleted={this.clearCompleted} activeTodos={activeTodos} completedTodos={completedTodos} filter={filter} /> : ''}
       </section>
     )
   }
@@ -110,19 +109,6 @@ App.propTypes = {
   toggleAllTodos: func.isRequired,
   editTodo: func.isRequired
 };
-
-function getVisibleTodos(todos, filter) {
-  return todos.filter(todo => {
-    switch (filter) {
-      case 'active':
-        return !todo.completed;
-      case 'completed':
-        return todo.completed;
-      default:
-        return true;
-    }
-  });
-}
 
 const mapStateToProps = (state, props) => {
   const filter = props.match.params.filter;

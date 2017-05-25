@@ -20,6 +20,19 @@ function todos(state = [], action) {
   }
 }
 
+export function getVisibleTodos(todos, filter) {
+  return todos.filter(todo => {
+    switch (filter) {
+      case 'active':
+        return !todo.completed;
+      case 'completed':
+        return todo.completed;
+      default:
+        return true;
+    }
+  });
+}
+
 export default combineReducers({
   todos
 });

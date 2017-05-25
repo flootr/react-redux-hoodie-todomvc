@@ -3,10 +3,10 @@ import cx from 'classnames';
 import { Link } from 'react-router-dom';
 import { func, string, number } from 'prop-types';
 
-function Footer({ todosCount, completedTodos, onClearCompleted, filter }) {
+function Footer({ activeTodos, completedTodos, onClearCompleted, filter }) {
   return (
     <footer className="footer">
-      <span className="todo-count"><strong>{todosCount}</strong> { todosCount > 1 ? 'items' : 'item'} left</span>
+      <span className="todo-count"><strong>{activeTodos}</strong> { activeTodos > 1 ? 'items' : 'item'} left</span>
       <ul className="filters">
         <li>
           <Link to="/" className={cx({ selected: !filter })}>All</Link>
@@ -27,7 +27,7 @@ Footer.propTypes = {
   onClearCompleted: func.isRequired,
   filter: string,
   completedTodos: number.isRequired,
-  todosCount: number.isRequired
+  activeTodos: number.isRequired
 }
 
 export default Footer;
