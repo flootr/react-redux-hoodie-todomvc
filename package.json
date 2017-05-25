@@ -18,10 +18,12 @@
     "todomvc-app-css": "^2.1.0"
   },
   "devDependencies": {
-    "react-scripts": "1.0.6"
+    "react-scripts": "1.0.6",
+    "serve": "^5.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
+    "now-start": "cd build/ && serve -s ./",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
