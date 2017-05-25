@@ -5,9 +5,7 @@ import cx from 'classnames';
 import { Link } from 'react-router-dom';
 import { fetchTodos, storeTodo, deleteTodo, toggleTodo, toggleAllTodos, editTodo } from '../actions/todos.actions';
 import './App.css';
-
-const ESCAPE_KEY = 27;
-const ENTER_KEY = 13;
+import TodoItem from '../components/todoItem';
 
 class App extends Component {
   state = {
@@ -18,14 +16,6 @@ class App extends Component {
 
   componentDidMount() {
     this.props.fetchTodos();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.editing && this.state.editing) {
-      const editField = this.editField;
-      editField.focus();
-      editField.setSelectionRange(editField.value.length, editField.value.length);
-    }
   }
 
   handleChange = (id) => (e) => {
@@ -57,34 +47,17 @@ class App extends Component {
     this.props.toggleAllTodos(checked);
   }
 
-  handleEdit = (id, text) => () => {
-    this.setState({ editing: id, editText: text });
+  handleEdit = (id) => () => {
+    this.setState({ editing: id });
   }
 
-  handleEditKeyDown = (e) => {
-    if (e.which === ESCAPE_KEY) {
-      this.handleEditCancel();
-      return;
-    }
-
-    if (e.which === ENTER_KEY) {
-      this.handleEditSave();
-    }
+  handleSave = (id) => (text) => {
+    this.props.editTodo(id, text);
+    this.setState({ editing: null });
   }
 
-  handleEditBlur = () => {
-    const value = this.state.editText.trim();
-
-    value ? this.handleEditSave() : this.handleEditCancel();
-  }
-
-  handleEditSave = () => {
-    this.props.editTodo(this.state.editing, this.state.editText);
-    this.setState({ editing: null, editText: '' });
-  }
-
-  handleEditCancel = () => {
-    this.setState({ editing: null, editText: '' })
+  handleCancel = () => {
+    this.setState({ editing: null });
   }
 
   clearCompleted = () => {
@@ -111,21 +84,16 @@ class App extends Component {
           ) }
           <ul className="todo-list">
             {todos.map(todo => (
-              <li key={todo._id} className={cx({ completed: todo.completed, editing: this.state.editing === todo._id })}>
-                <div className="view">
-                  <input type="checkbox" className="toggle" checked={!!todo.completed} onChange={this.toggle(todo)}/>
-                  <label onDoubleClick={this.handleEdit(todo._id, todo.todo)}>{todo.todo}</label>
-                  <button className="destroy" onClick={this.handleDestroy(todo._id)}></button>
-                </div>
-                { this.state.editing === todo._id && <input
-                  ref={(editField) => this.editField = editField}
-                  className="edit"
-                  value={this.state.editText}
-                  onChange={this.handleChange('editText')}
-                  onBlur={this.handleEditBlur}
-                  onKeyDown={this.handleEditKeyDown}
-                /> }
-              </li>
+              <TodoItem
+                editing={this.state.editing === todo._id}
+                key={todo._id}
+                todo={todo}
+                onDestroy={this.handleDestroy(todo._id)}
+                onToggle={this.toggle(todo)}
+                onEdit={this.handleEdit(todo._id)}
+                onSave={this.handleSave(todo._id)}
+                onCancel={this.handleCancel}
+              />
             ))}
           </ul>
         </section>
