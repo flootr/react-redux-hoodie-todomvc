@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import cx from 'classnames';
-import { Link } from 'react-router-dom';
 import { fetchTodos, storeTodo, deleteTodo, toggleTodo, toggleAllTodos, editTodo } from '../actions/todos.actions';
-import './App.css';
 import TodoItem from '../components/todoItem';
+import Footer from '../components/footer';
+import './App.css';
 
 class App extends Component {
   state = {
@@ -32,7 +31,7 @@ class App extends Component {
     this.setState({ todo: '' });
   }
 
-  handleDestroy = (id) => (e) => {
+  destroy = (id) => (e) => {
     e.preventDefault();
 
     this.props.deleteTodo(id);
@@ -47,16 +46,16 @@ class App extends Component {
     this.props.toggleAllTodos(checked);
   }
 
-  handleEdit = (id) => () => {
+  edit = (id) => () => {
     this.setState({ editing: id });
   }
 
-  handleSave = (id) => (text) => {
+  save = (id) => (text) => {
     this.props.editTodo(id, text);
     this.setState({ editing: null });
   }
 
-  handleCancel = () => {
+  cancel = () => {
     this.setState({ editing: null });
   }
 
@@ -88,34 +87,18 @@ class App extends Component {
                 editing={this.state.editing === todo._id}
                 key={todo._id}
                 todo={todo}
-                onDestroy={this.handleDestroy(todo._id)}
+                onDestroy={this.destroy(todo._id)}
                 onToggle={this.toggle(todo)}
-                onEdit={this.handleEdit(todo._id)}
-                onSave={this.handleSave(todo._id)}
-                onCancel={this.handleCancel}
+                onEdit={this.edit(todo._id)}
+                onSave={this.save(todo._id)}
+                onCancel={this.cancel}
               />
             ))}
           </ul>
         </section>
-        { (activeTodos || completedTodos) ? (
-          <footer className="footer">
-            <span className="todo-count"><strong>{todos.length}</strong> { todos.length > 1 ? 'items' : 'item'} left</span>
-            <ul className="filters">
-              <li>
-                <Link to="/" className={cx({ selected: !filter })}>All</Link>
-              </li>
-              <li>
-                <Link to="/active" className={cx({ selected: filter === 'active' })}>Active</Link>
-              </li>
-              <li>
-                <Link to="/completed" className={cx({ selected: filter === 'completed' })}>Completed</Link>
-              </li>
-            </ul>
-            { completedTodos > 0 && <button className="clear-completed" onClick={this.clearCompleted}>Clear completed</button> }
-          </footer>
-        ) : '' }
+        {(activeTodos || completedTodos) ? <Footer onClearCompleted={this.clearCompleted} todosCount={todos.length} completedTodos={completedTodos} filter={filter} /> : ''}
       </section>
-    );
+    )
   }
 }
 
