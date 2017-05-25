@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import unionBy from 'lodash/unionBy';
 
 function todos(state = [], action) {
   switch (action.type) {
@@ -8,13 +7,9 @@ function todos(state = [], action) {
     case 'ADD_TODO':
       return [...state, action.payload];
     case 'REMOVE_TODO':
-      return [...state.filter(todo => todo._id !== action.payload)];
-    case 'REMOVE_TODOS':
-      return [...state.filter(todo => action.payload.indexOf(todo._id) === -1)];
+      return [...state.filter(todo => todo._id !== action.payload._id)];
     case 'UPDATE_TODO':
       return [...state.map(todo => todo._id === action.payload._id ? action.payload : todo)];
-    case 'UPDATE_TODOS':
-      return unionBy(action.payload, state, '_id');
     default:
       return state;
   }

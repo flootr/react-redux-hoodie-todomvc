@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { func } from 'prop-types';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { fetchTodos, storeTodo, deleteTodo, toggleTodo, toggleAllTodos, editTodo } from '../actions/todos.actions';
 import { getVisibleTodos } from '../reducers';
 import TodoItem from '../components/todoItem';
 import Footer from '../components/footer';
+import { withHoodie } from '../hoodie';
 
 class App extends Component {
   state = {
@@ -129,4 +131,9 @@ const mapDispatchToProps = {
   editTodo
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHoodie
+);
+
+export default enhance(App);
