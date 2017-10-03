@@ -5,9 +5,13 @@ import PouchDB from 'pouchdb';
 import { addTodo, removeTodo, updateTodo } from './actions/todos.actions';
 
 const hoodie = new Hoodie({
-  url: process.env.HOODIE_URL || 'http://localhost:8080',
+  url: process.env.REACT_APP_HOODIE_URL,
   PouchDB
 });
+
+if (process.env.NODE_ENV !== 'production' && window !== undefined) {
+  window.hoodie = hoodie
+}
 
 export default hoodie;
 
