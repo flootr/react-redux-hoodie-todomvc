@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import orderBy from 'lodash/orderBy'
 
 function todos(state = [], action) {
   switch (action.type) {
@@ -16,7 +17,7 @@ function todos(state = [], action) {
 }
 
 export function getVisibleTodos(todos, filter) {
-  return todos.filter(todo => {
+  return orderBy(todos, ['hoodie.createdAt', 'desc']).filter(todo => {
     switch (filter) {
       case 'active':
         return !todo.completed;

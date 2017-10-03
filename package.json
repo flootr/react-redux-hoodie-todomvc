@@ -5,6 +5,7 @@
   "dependencies": {
     "@hoodie/client": "^10.1.1",
     "classnames": "^2.2.5",
+    "lodash": "^4.17.4",
     "pouchdb": "^6.3.4",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",

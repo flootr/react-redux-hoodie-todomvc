@@ -112,7 +112,7 @@ App.propTypes = {
   editTodo: func.isRequired
 };
 
-const mapStateToProps = (state, props) => {
+const mapState = (state, props) => {
   const filter = props.match.params.filter;
 
   return {
@@ -132,7 +132,7 @@ const mapDispatchToProps = {
 };
 
 const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapState, mapDispatchToProps),
   withHoodie
 );
 
